@@ -1,0 +1,26 @@
+
+name: Nightly Build
+description: An action for submitting nigthly builds to artifact and Testflight
+author: "andyhuber"
+branding:
+  icon: "archive"
+  color: "gray-dark"
+inputs:
+  environment:
+    description: "The App environment to run."
+    required: true
+  developer_dir:
+    description: "Xcode directory"
+    required: true
+  fastlane_password:
+    description: "Fastlane Password"
+    required: true
+  match_password:
+    description: "Match repository Password"
+    required: true
+  slack_url:
+    description: "Webhook URL for release notes"
+    required: true
+runs:
+  using: node12
+  main: main.js
