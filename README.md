@@ -10,7 +10,7 @@ jobs:
     runs-on: whatever-you-need
     steps:
       - name: Submit to Testflight - [Production, Stage]
-        uses: voiapp/nightly_builds
+        uses: voiapp/nightly-build-action-ios@VERSION-TAG
         with:
           environment: 'production-stage'
           developer_dir: ${{ matrix.xcode }}
