@@ -41,7 +41,10 @@ function tag_version() {
 
 function post_release_notes() {
     shell.exec("git fetch --tags");
-    shell.exec("bundle exec fastlane post_slack_release_notes");
+    fastlaneSlackResult = shell.exec("bundle exec fastlane post_slack_release_notes");
+    if (fastlaneTestflightResult.code !== 0) {
+        setFailed(new Error(`Fastlane Testflight failed`));
+    }
 }
 
 function setFailed(error) {
