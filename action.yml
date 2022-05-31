@@ -21,6 +21,9 @@ inputs:
   slack_url:
     description: "Webhook URL for release notes"
     required: true
+  is_saucelab_ipa_export_action:
+    description: "When true, this will not upload build to App Store Connect, but only create IPA for Saucelab."
+    required: true
 runs:
   using: node12
   main: main.js

@@ -10,6 +10,7 @@ function run() {
         const fastlane_password = core.getInput('fastlane_password');
         const match_password = core.getInput('match_password');
         const slack_release_notes_url = core.getInput('slack_url');
+        const is_saucelab_ipa_export_action = core.getInput('is_saucelab_ipa_export_action')
 
         shell.env["DEVELOPER_DIR"] = xcode_dir;
         shell.env["FASTLANE_PASSWORD"] = fastlane_password;
@@ -18,11 +19,16 @@ function run() {
 
         shell.exec("bundle install");
         shell.exec("bundle exec fastlane create_new_temporary_keychain");
+
+        if (is_saucelab_ipa_export_action !== "true") {
+          environments.forEach(environment =>  export_saucelab_ipa(environment));
+        } else {
+          environments.forEach(environment =>  build_upload(environment));
+        }
         
-        environments.forEach(environment =>  build_upload(environment));
         tag_version()
         post_release_notes()
-        
+
     } catch (error) {
         core.setFailed(error.message);
     }
@@ -30,6 +36,13 @@ function run() {
 
 function build_upload(environment) {
     fastlaneTestflightResult = shell.exec("fastlane submit_to_testflight env:" + environment);
+    if (fastlaneTestflightResult.code !== 0) {
+        setFailed(new Error(`Fastlane Testflight failed`));
+    }
+}
+
+function export_saucelab_ipa(environment) {
+    fastlaneTestflightResult = shell.exec("fastlane export_saucelab_ipa env:" + environment);
     if (fastlaneTestflightResult.code !== 0) {
         setFailed(new Error(`Fastlane Testflight failed`));
     }
