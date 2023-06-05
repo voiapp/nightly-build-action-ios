@@ -22,5 +22,5 @@ inputs:
     description: "Webhook URL for release notes"
     required: true
 runs:
-  using: node12
+  using: node16
   main: main.js
